@@ -4,8 +4,9 @@
 export const HBAR = 1;
 export const MASS = 1;
 
-// Grid dimensions
-export const GRID_W = 400;
+// Grid dimensions — wider grid prevents slit edges clipping the boundary
+// guard in sampleVelocity() at large slit separations
+export const GRID_W = 500;
 export const GRID_H = 600;
 
 // Wavelength in grid cells — determines fringe spacing

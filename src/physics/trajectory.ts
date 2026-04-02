@@ -23,8 +23,9 @@ const DT = 4.0; // time step: base vy ≈ K = 0.25, so DT=4 → ~1 cell/frame = 
 const MAX_TRAIL = 800;
 
 export function createParticle(x: number): Particle {
-  // Spawn slightly inside the velocity-field computed region (starts at BARRIER_Y+2)
-  const startY = BARRIER_Y + 3;
+  // Spawn at y+8: far enough from the barrier that the wave has developed
+  // its far-field character and vy is well-defined everywhere
+  const startY = BARRIER_Y + 8;
   return {
     x,
     y: startY,
@@ -34,22 +35,36 @@ export function createParticle(x: number): Particle {
   };
 }
 
+// Minimum |psi|^2 fraction of row-max before a position is eligible for spawn.
+// Prevents particles starting in near-zero amplitude regions (dark nodes near
+// the barrier at extreme slit params) where the velocity field is clamped to 0.
+const SPAWN_PROB_THRESHOLD = 0.02;
+
 /**
- * Spawn particles with initial x positions sampled from |psi|^2 at BARRIER_Y+2.
- * Returns N particles whose starting x positions follow the Born distribution.
+ * Spawn particles whose initial x positions follow the Born distribution,
+ * but only at positions where |psi|^2 exceeds SPAWN_PROB_THRESHOLD * rowMax.
+ * This prevents particles from starting in the near-zero regions between the
+ * slits at extreme slit parameters, where the velocity field is unreliable.
  */
 export function spawnParticles(count: number, wave: WaveField): Particle[] {
-  const y = BARRIER_Y + 2;
+  const y = BARRIER_Y + 8;
   const row = new Float32Array(GRID_W);
-  let sum = 0;
+  let rowMax = 0;
 
   for (let x = 0; x < GRID_W; x++) {
     const v = wave.prob[y * GRID_W + x];
     row[x] = v;
-    sum += v;
+    if (v > rowMax) rowMax = v;
   }
 
-  // Build CDF
+  // Zero out positions below threshold so they cannot be sampled
+  let sum = 0;
+  for (let x = 0; x < GRID_W; x++) {
+    if (row[x] < SPAWN_PROB_THRESHOLD * rowMax) row[x] = 0;
+    sum += row[x];
+  }
+
+  // Build CDF over eligible positions only
   const cdf = new Float32Array(GRID_W);
   let acc = 0;
   for (let x = 0; x < GRID_W; x++) {
@@ -60,7 +75,7 @@ export function spawnParticles(count: number, wave: WaveField): Particle[] {
   const particles: Particle[] = [];
   for (let n = 0; n < count; n++) {
     const r = Math.random();
-    let x = 0;
+    let x = GRID_W / 2; // fallback to centre
     for (let i = 0; i < GRID_W; i++) {
       if (cdf[i] >= r) { x = i + Math.random(); break; }
     }
