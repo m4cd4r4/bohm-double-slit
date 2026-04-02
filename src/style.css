@@ -1,0 +1,94 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  background: #07080f;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  color: rgba(160, 210, 255, 0.85);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* ── lil-gui overrides ───────────────────────────────── */
+.lil-gui {
+  --background-color: rgba(7, 8, 18, 0.96) !important;
+  --title-background-color: rgba(15, 20, 45, 0.98) !important;
+  --title-text-color: rgba(160, 210, 255, 0.85) !important;
+  --widget-color: rgba(20, 28, 55, 0.85) !important;
+  --hover-color: rgba(35, 55, 100, 0.9) !important;
+  --focus-color: rgba(74, 158, 255, 0.45) !important;
+  --number-color: #7ec8ff !important;
+  --string-color: #90ddb0 !important;
+  --text-color: rgba(150, 195, 240, 0.85) !important;
+  --font-family: ui-monospace, Consolas, monospace !important;
+  --font-size: 11px !important;
+  --input-font-size: 11px !important;
+  --line-height: 1.5 !important;
+  --padding: 5px !important;
+  --spacing: 5px !important;
+  --widget-height: 22px !important;
+  border: 1px solid rgba(74, 158, 255, 0.15) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.lil-gui .title {
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 8px 10px !important;
+  border-bottom: 1px solid rgba(74, 158, 255, 0.12) !important;
+}
+
+.lil-gui .lil-gui {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.lil-gui .lil-gui .title {
+  font-size: 10px !important;
+  letter-spacing: 0.1em !important;
+  color: rgba(120, 170, 220, 0.7) !important;
+  background: rgba(255,255,255,0.025) !important;
+  padding: 5px 8px !important;
+}
+
+.lil-gui button {
+  color: rgba(160, 210, 255, 0.85) !important;
+  background: rgba(30, 50, 100, 0.5) !important;
+  border: 1px solid rgba(74, 158, 255, 0.2) !important;
+  border-radius: 3px !important;
+  transition: background 0.15s, border-color 0.15s !important;
+}
+
+.lil-gui button:hover {
+  background: rgba(50, 90, 160, 0.6) !important;
+  border-color: rgba(74, 158, 255, 0.45) !important;
+}
+
+/* Tooltip via title attribute */
+.lil-gui .controller[title] {
+  cursor: help;
+}
+
+.lil-gui .controller[title]:hover .name {
+  color: rgba(180, 225, 255, 1) !important;
+}
+
+/* Folder header spacing */
+.lil-gui .children {
+  border-left: 1px solid rgba(74, 158, 255, 0.06) !important;
+  margin-left: 4px !important;
+}
