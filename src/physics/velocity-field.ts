@@ -10,8 +10,8 @@
  *   Im(grad_psi / psi) = Im((dpsi/dx + i*dpsi/dy) / psi)
  *
  * Expanded:
- *   vx = (hbar/m) * (im * d(re)/dx - re * d(im)/dx) / |psi|^2
- *   vy = (hbar/m) * (im * d(re)/dy - re * d(im)/dy) / |psi|^2
+ *   vx = (hbar/m) * (re * d(im)/dx - im * d(re)/dx) / |psi|^2
+ *   vy = (hbar/m) * (re * d(im)/dy - im * d(re)/dy) / |psi|^2
  */
 
 import { GRID_W, GRID_H, HBAR, MASS, BARRIER_Y, R_EPSILON, K } from './constants';
@@ -50,9 +50,10 @@ export function computeVelocityField(wave: WaveField): VelocityField {
       const dre_dy = (re[(y + 1) * GRID_W + x] - re[(y - 1) * GRID_W + x]) / 2;
       const dim_dy = (im[(y + 1) * GRID_W + x] - im[(y - 1) * GRID_W + x]) / 2;
 
-      vx[idx] = coeff * (imC * dre_dx - reC * dim_dx) / prob;
+      // Im[(dψ/dx)/ψ] = (re·d(im)/dx - im·d(re)/dx) / |ψ|²
+      vx[idx] = coeff * (reC * dim_dx - imC * dre_dx) / prob;
       // vy: quantum correction + base forward momentum ħk/m for downward-propagating wave
-      vy[idx] = coeff * (imC * dre_dy - reC * dim_dy) / prob + (HBAR * K) / MASS;
+      vy[idx] = coeff * (reC * dim_dy - imC * dre_dy) / prob + (HBAR * K) / MASS;
     }
   }
 

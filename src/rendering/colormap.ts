@@ -59,28 +59,3 @@ export function colormapPlasma(t: number): [number, number, number] {
     Math.round(b0 + s * (b1 - b0)),
   ];
 }
-
-/** Viridis-like for generic fields */
-export function colormapViridis(t: number): [number, number, number] {
-  t = Math.max(0, Math.min(1, t));
-  const stops: Array<[number, number, number, number]> = [
-    [0.00, 68,  1,  84],
-    [0.25, 59, 82, 139],
-    [0.50, 33, 145, 140],
-    [0.75, 94, 201, 98],
-    [1.00, 253, 231, 37],
-  ];
-
-  let i = 0;
-  while (i < stops.length - 2 && t > stops[i + 1][0]) i++;
-
-  const [t0, r0, g0, b0] = stops[i];
-  const [t1, r1, g1, b1] = stops[i + 1];
-  const s = (t - t0) / (t1 - t0);
-
-  return [
-    Math.round(r0 + s * (r1 - r0)),
-    Math.round(g0 + s * (g1 - g0)),
-    Math.round(b0 + s * (b1 - b0)),
-  ];
-}

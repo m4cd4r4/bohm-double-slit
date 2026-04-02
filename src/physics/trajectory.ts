@@ -110,7 +110,7 @@ export function stepParticle(particle: Particle, vf: VelocityField): void {
   // Out of bounds
   if (nx < 0 || nx >= GRID_W || ny >= GRID_H) {
     particle.active = false;
-    if (ny >= GRID_H - 1) particle.detectedAt = particle.x;
+    if (ny >= GRID_H - 1) particle.detectedAt = nx;
     return;
   }
 

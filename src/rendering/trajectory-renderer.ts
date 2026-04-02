@@ -65,7 +65,10 @@ export function renderHistogram(
   canvasH: number,
   stripH: number
 ): void {
-  const maxVal = Math.max(...Array.from(histogram), 1);
+  let maxVal = 1;
+  for (let i = 0; i < histogram.length; i++) {
+    if (histogram[i] > maxVal) maxVal = histogram[i];
+  }
   const bins = histogram.length;
   const binW = canvasW / bins;
   const stripY = canvasH - stripH;

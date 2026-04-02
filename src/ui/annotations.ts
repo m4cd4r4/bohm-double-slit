@@ -42,7 +42,7 @@ export const ANNOTATIONS: Annotation[] = [
   },
   {
     fx: 0.03,
-    fy: GRID_H * 0.72 / GRID_H,
+    fy: 0.72,
     align: 'left',
     text: 'Trajectories never',
     subtext: 'cross symmetry axis',
@@ -50,7 +50,7 @@ export const ANNOTATIONS: Annotation[] = [
   },
   {
     fx: 0.97,
-    fy: GRID_H * 0.72 / GRID_H,
+    fy: 0.72,
     align: 'right',
     text: 'Bunching → bright',
     subtext: 'fringes (Q valleys)',
